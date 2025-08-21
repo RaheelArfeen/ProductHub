@@ -5,7 +5,7 @@ import { Star, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 const FeaturedProducts = () => {
-    // Animation variants for the container (manages the stagger)
+    // Animation variants for the lg:container (manages the stagger)
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -24,7 +24,7 @@ const FeaturedProducts = () => {
 
     return (
         <section className="py-20 bg-white dark:bg-gray-800 transition-colors duration-300">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="lg:container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header (No animation) */}
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -40,7 +40,7 @@ const FeaturedProducts = () => {
                     className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
                     variants={containerVariants}
                     initial="hidden"
-                    whileInView="visible" // Triggers the animation for the container and its children
+                    whileInView="visible" // Triggers the animation for the lg:container and its children
                     viewport={{ once: true, amount: 0.5 }} // Triggers when 50% of the grid is visible
                 >
                     {[1, 2, 3].map((item) => (

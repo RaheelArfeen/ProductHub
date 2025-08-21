@@ -40,8 +40,7 @@ export default function Login() {
     const handleGoogleLogin = async () => {
         setIsLoading(true);
         try {
-            await loginWithGoogle(); // triggers Google login
-            // No toast here
+            await loginWithGoogle();
         } catch {
             toast.error("Google login failed.");
         } finally {
@@ -52,7 +51,6 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-300 px-4">
             <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-3xl shadow-2xl dark:shadow-xl p-8 sm:p-10 flex flex-col border border-gray-200 dark:border-gray-700">
-
                 {/* Logo & Header */}
                 <div className="text-center mb-6">
                     <div className="inline-flex items-center justify-center space-x-2 mb-3">
@@ -66,36 +64,42 @@ export default function Login() {
                 {/* Form Card */}
                 <div className="flex-1">
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        <div className="relative">
+                        {/* Email Input */}
+                        <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Email
                             </label>
-                            <Mail className="absolute left-3 top-12 h-5 w-5 text-gray-400 dark:text-gray-500" />
-                            <input
-                                id="email"
-                                type="email"
-                                placeholder="you@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-                                required
-                            />
+                            <div className="relative flex items-center">
+                                <Mail className="absolute left-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                                <input
+                                    id="email"
+                                    type="email"
+                                    placeholder="you@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+                                    required
+                                />
+                            </div>
                         </div>
 
-                        <div className="relative">
+                        {/* Password Input */}
+                        <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Password
                             </label>
-                            <Lock className="absolute left-3 top-12 h-5 w-5 text-gray-400 dark:text-gray-500" />
-                            <input
-                                id="password"
-                                type="password"
-                                placeholder="Enter your password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-                                required
-                            />
+                            <div className="relative flex items-center">
+                                <Lock className="absolute left-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                                <input
+                                    id="password"
+                                    type="password"
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+                                    required
+                                />
+                            </div>
                         </div>
 
                         <button

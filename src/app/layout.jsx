@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <SessionProvider>
                     <AuthWrapper>
-                        <div className="flex flex-col justify-between min-h-screen">
+                        <div className="flex flex-col justify-between min-h-screen bg-white dark:bg-gray-900">
                             <Navbar />
                             <main>{children}</main>
                             <FooterSection />

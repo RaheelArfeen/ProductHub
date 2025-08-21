@@ -70,7 +70,7 @@ const Navbar = () => {
 
     return (
         <nav className="border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900 backdrop-blur sticky top-0 z-50 shadow-md transition-colors duration-300">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="lg:container  mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2">
@@ -84,7 +84,7 @@ const Navbar = () => {
                             <motion.div key={link.path} whileHover="hover" variants={linkHoverVariants}>
                                 <Link
                                     href={link.path}
-                                    className={`font-medium transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400 ${isActive(link.path) ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-300"
+                                    className={`font-medium lg:text-base text-sm transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400 ${isActive(link.path) ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-300"
                                         }`}
                                 >
                                     {link.label}
@@ -132,14 +132,14 @@ const Navbar = () => {
                             <div className="relative hidden md:block">
                                 <motion.button
                                     onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                                    className="flex items-center justify-center p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 overflow-hidden"
+                                    className="flex items-center h-10 w-10 justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 overflow-hidden"
                                     whileTap={{ scale: 0.9 }}
                                 >
                                     {user.image ? (
                                         <img
                                             src={user.image}
                                             alt={user.fullName || "User"}
-                                            className="h-6 w-6 rounded-full object-cover"
+                                            className="rounded-full object-cover"
                                         />
                                     ) : (
                                         <span className="h-6 w-6 flex items-center justify-center bg-blue-500 text-white font-semibold rounded-full">
@@ -280,18 +280,18 @@ const Navbar = () => {
                                 )}
 
                                 {user && (
-                                    <motion.div className="px-2 py-2 border-t border-gray-100 dark:border-gray-700" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, delay: 0.25 }}>
-                                        <div className="flex items-center gap-2">
+                                    <motion.div className="px-2 pt-4 pb-1 border-t border-gray-100 dark:border-gray-700" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, delay: 0.25 }}>
+                                        <div className="flex items-center gap-2 h-12 w-12">
                                             {user.image ? (
-                                                <img src={user.image} alt={user.fullName || "User"} className="h-6 w-6 rounded-full object-cover" />
+                                                <img src={user.image} alt={user.fullName || "User"} className="rounded-full object-cover" />
                                             ) : (
                                                 <span className="h-6 w-6 flex items-center justify-center bg-blue-500 text-white font-semibold rounded-full">
                                                     {user.fullName?.charAt(0).toUpperCase() || "U"}
                                                 </span>
                                             )}
-                                            <div className="flex flex-col leading-none">
-                                                <p className="text-sm font-medium text-gray-900 dark:text-white">{user.fullName || "User"}</p>
-                                                <p className="text-xs truncate text-gray-700 dark:text-gray-400">{user.email}</p>
+                                            <div className="flex flex-col mt-2 leading-none">
+                                                <p className="font-medium text-gray-900 dark:text-white">{user.fullName || "User"}</p>
+                                                <p className="text-sm truncate text-gray-700 dark:text-gray-400">{user.email}</p>
                                             </div>
                                         </div>
                                         <button

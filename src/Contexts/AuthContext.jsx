@@ -1,4 +1,4 @@
-"use client"; // <--- THIS IS REQUIRED
+"use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -6,8 +6,12 @@ import { useSession, signIn, signOut } from "next-auth/react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const { data: session } = useSession(); // now works
+    const { data: session } = useSession();
     const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        console.log(user);
+    })
 
     useEffect(() => {
         if (session?.user) {

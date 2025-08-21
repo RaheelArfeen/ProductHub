@@ -22,7 +22,7 @@ export default function FooterSection() {
             whileInView="visible"
             viewport={{ once: true }}
         >
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="lg:container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid md:grid-cols-4 gap-8">
                     <motion.div variants={itemVariants}>
                         <h3 className="font-bold text-lg mb-4">ProductHub</h3>
