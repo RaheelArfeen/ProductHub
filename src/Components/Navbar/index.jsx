@@ -3,22 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, Package, User, LogOut, Moon, Sun } from "lucide-react";
+import { Menu, X, Package, LogOut, Moon, Sun } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/Contexts/AuthContext";
 
-const Navbar = ({ user: propUser }) => {
+const Navbar = () => {
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
-    // Mock user data
-    const mockUser = {
-        fullName: "John Doe",
-        email: "john.doe@example.com",
-    };  
-
-    const user = propUser || mockUser;
+    const { user, logout } = useAuth();
 
     const isActive = (path) => pathname === path;
 
@@ -28,9 +23,8 @@ const Navbar = ({ user: propUser }) => {
         { path: "/about", label: "About" },
         { path: "/contact", label: "Contact" },
         { path: "/blog", label: "Blog" },
-        ...(user ? [{ path: "/dashboard/add-product", label: "Dashboard" }] : []), // Add dashboard if logged in
+        ...(user ? [{ path: "/dashboard/add-product", label: "Dashboard" }] : []),
     ];
-
 
     // Load theme from localStorage
     useEffect(() => {
@@ -64,7 +58,6 @@ const Navbar = ({ user: propUser }) => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Dropdown & hover animation variants
     const dropdownVariants = {
         hidden: { opacity: 0, y: -10, transition: { duration: 0.2 } },
         visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
@@ -72,14 +65,11 @@ const Navbar = ({ user: propUser }) => {
     };
 
     const linkHoverVariants = {
-        hover: {
-            scale: 1.05,
-            transition: { duration: 0.2 },
-        },
+        hover: { scale: 1.05, transition: { duration: 0.2 } },
     };
 
     return (
-        <nav className="border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 shadow-md transition-colors duration-300">
+        <nav className="border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900 backdrop-blur sticky top-0 z-50 shadow-md transition-colors duration-300">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
@@ -142,11 +132,22 @@ const Navbar = ({ user: propUser }) => {
                             <div className="relative hidden md:block">
                                 <motion.button
                                     onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                                    className="flex items-center justify-center p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
+                                    className="flex items-center justify-center p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 overflow-hidden"
                                     whileTap={{ scale: 0.9 }}
                                 >
-                                    <User className="h-5 w-5 text-gray-900 dark:text-white" />
+                                    {user.image ? (
+                                        <img
+                                            src={user.image}
+                                            alt={user.fullName || "User"}
+                                            className="h-6 w-6 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <span className="h-6 w-6 flex items-center justify-center bg-blue-500 text-white font-semibold rounded-full">
+                                            {user.fullName?.charAt(0).toUpperCase() || "U"}
+                                        </span>
+                                    )}
                                 </motion.button>
+
                                 <AnimatePresence>
                                     {userDropdownOpen && (
                                         <motion.div
@@ -158,7 +159,7 @@ const Navbar = ({ user: propUser }) => {
                                         >
                                             <div className="flex items-center justify-start gap-2 p-2">
                                                 <div className="flex flex-col space-y-1 leading-none">
-                                                    <p className="font-medium text-gray-900 dark:text-white">{user.fullName}</p>
+                                                    <p className="font-medium text-gray-900 dark:text-white">{user.fullName || "User"}</p>
                                                     <p className="w-[200px] truncate text-sm text-gray-700 dark:text-gray-400">{user.email}</p>
                                                 </div>
                                             </div>
@@ -166,7 +167,7 @@ const Navbar = ({ user: propUser }) => {
                                             <button
                                                 className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center"
                                                 onClick={() => {
-                                                    // Add your logout logic here
+                                                    logout();
                                                     setUserDropdownOpen(false);
                                                 }}
                                             >
@@ -242,8 +243,18 @@ const Navbar = ({ user: propUser }) => {
                         >
                             <div className="px-4 py-2 space-y-3">
                                 {links.map((link) => (
-                                    <motion.div key={link.path} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, delay: 0.1 }} whileTap={{ scale: 0.95 }}>
-                                        <Link href={link.path} className="block py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300" onClick={() => setMobileMenuOpen(false)}>
+                                    <motion.div
+                                        key={link.path}
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.2, delay: 0.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <Link
+                                            href={link.path}
+                                            className="block py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
                                             {link.label}
                                         </Link>
                                     </motion.div>
@@ -251,22 +262,42 @@ const Navbar = ({ user: propUser }) => {
 
                                 {!user && (
                                     <motion.div className="space-y-2" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, delay: 0.2 }}>
-                                        <Link href="/login" className="block w-full py-2 text-center bg-gray-200 dark:bg-gray-800 rounded-md text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300" onClick={() => setMobileMenuOpen(false)}>
+                                        <Link
+                                            href="/login"
+                                            className="block w-full py-2 text-center bg-gray-200 dark:bg-gray-800 rounded-md text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
                                             Login
                                         </Link>
-                                        <Link href="/register" className="block w-full py-2 text-center bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300" onClick={() => setMobileMenuOpen(false)}>
+                                        <Link
+                                            href="/register"
+                                            className="block w-full py-2 text-center bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
                                             Get Started
                                         </Link>
                                     </motion.div>
                                 )}
+
                                 {user && (
                                     <motion.div className="px-2 py-2 border-t border-gray-100 dark:border-gray-700" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, delay: 0.25 }}>
-                                        <p className="text-sm font-medium text-gray-900 dark:text-white">{user.fullName}</p>
-                                        <p className="text-xs truncate text-gray-700 dark:text-gray-400">{user.email}</p>
+                                        <div className="flex items-center gap-2">
+                                            {user.image ? (
+                                                <img src={user.image} alt={user.fullName || "User"} className="h-6 w-6 rounded-full object-cover" />
+                                            ) : (
+                                                <span className="h-6 w-6 flex items-center justify-center bg-blue-500 text-white font-semibold rounded-full">
+                                                    {user.fullName?.charAt(0).toUpperCase() || "U"}
+                                                </span>
+                                            )}
+                                            <div className="flex flex-col leading-none">
+                                                <p className="text-sm font-medium text-gray-900 dark:text-white">{user.fullName || "User"}</p>
+                                                <p className="text-xs truncate text-gray-700 dark:text-gray-400">{user.email}</p>
+                                            </div>
+                                        </div>
                                         <button
                                             className="block mt-2 w-full py-2 text-center bg-gray-200 dark:bg-gray-800 rounded-md text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
                                             onClick={() => {
-                                                // Add your logout logic here
+                                                logout();
                                                 setMobileMenuOpen(false);
                                             }}
                                         >
