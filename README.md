@@ -68,7 +68,7 @@ npm start
 
 ## 📦 Deployment
 This project is deployed on [Vercel](https://vercel.com/).  
-Production URL: [https://product-hub-lyart.vercel.app/](https://product-hub-lyart.vercel.app/)
+Production URL: [https://product-hub-lyart.vercel.app/](https://product-hub-lyart.vercel.app)
 
 ---
 
