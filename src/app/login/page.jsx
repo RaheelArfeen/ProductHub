@@ -11,7 +11,7 @@ export default function Login() {
     const handleGoogleLogin = async () => {
         setIsLoading(true);
         try {
-            await signIn("google", { callbackUrl: "/" });
+            await signIn("google", { callbackUrl: "/products" });
         } catch {
             setIsLoading(false);
         }
