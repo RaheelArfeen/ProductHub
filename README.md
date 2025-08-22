@@ -62,9 +62,7 @@ npm start
 | `/products`         | Product listing with search & filter             | Public       |
 | `/products/[id]`    | Single product details page                      | Public       |
 | `/login`            | User login page                                  | Public       |
-| `/register`         | User registration page                           | Public       |
 | `/dashboard`        | User dashboard (protected)                       | Auth only    |
-| `/dashboard/admin`  | Admin dashboard with product management          | Admin only   |
 
 ---
 
