@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/Contexts/AuthContext";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -70,6 +70,16 @@ const Page = () => {
             console.error(err);
             toast.error("Failed to add product");
         }
+    };
+
+    // New function to truncate the description for the preview
+    const truncateDescription = (text, wordLimit) => {
+        if (!text) return '';
+        const words = text.split(' ');
+        if (words.length > wordLimit) {
+            return words.slice(0, wordLimit).join(' ') + '...';
+        }
+        return text;
     };
 
     const itemVariants = {
@@ -305,7 +315,7 @@ const Page = () => {
                                 </span>
                             </div>
                             <h3 className="text-xl font-bold mb-1 text-gray-900 dark:text-gray-100">{productName || 'Product Name'}</h3>
-                            <p className="text-gray-700 text-sm mb-2 dark:text-gray-300">{description || 'Product description will appear here...'}</p>
+                            <p className="text-gray-700 text-sm mb-2 dark:text-gray-300">{truncateDescription(description, 50) || 'Product description will appear here...'}</p>
                             <p className="text-xl font-semibold text-gray-900 dark:text-gray-100">${price || '0'}<span className="text-sm text-gray-500 dark:text-gray-400">/month</span></p>
                         </div>
                         {/* Tips for Success Section */}

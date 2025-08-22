@@ -188,7 +188,7 @@ const Navbar = () => {
                                 </motion.div>
                                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                     <Link
-                                        href="/register"
+                                        href="/login"
                                         className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors duration-300"
                                     >
                                         Get Started
@@ -268,7 +268,7 @@ const Navbar = () => {
                                             Login
                                         </Link>
                                         <Link
-                                            href="/register"
+                                            href="/login"
                                             className="block w-full py-2 text-center bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
