@@ -8,7 +8,23 @@ export const authOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
     ],
-    // Optional: callbacks, session config, etc.
+
+    // Use a secret to encrypt/sign cookies (required in production)
+    secret: process.env.NEXTAUTH_SECRET,
+
+    // Optional: session settings
+    session: {
+        strategy: "jwt", // you can also use 'database' if using a DB for sessions
+    },
+
+    // Optional: callbacks for customizing user/session data
+    callbacks: {
+        async session({ session, token }) {
+            // You can add custom fields to the session object here
+            session.user.id = token.sub;
+            return session;
+        },
+    },
 };
 
 const handler = NextAuth(authOptions);
