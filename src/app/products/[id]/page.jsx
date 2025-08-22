@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react"; // <-- Import useState
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/Components/Loader";
 import Link from "next/link";
-import { ArrowLeft, ShoppingCart } from "lucide-react";
-import { toast } from "sonner"; // <-- import toast
+import { ArrowLeft, ShoppingCart, Loader2 } from "lucide-react"; // <-- Import Loader2 for the spinner
+import { toast } from "sonner";
 
 // Fetch single product by ID
 const fetchProductById = async (id) => {
@@ -19,6 +20,7 @@ const fetchProductById = async (id) => {
 export default function ProductDetailPage({ params }) {
     const { id } = params;
     const router = useRouter();
+    const [isPurchasing, setIsPurchasing] = useState(false); // <-- New state for the button loader
 
     const {
         data: product,
@@ -50,10 +52,13 @@ export default function ProductDetailPage({ params }) {
 
     // Handle Purchase Click
     const handlePurchase = () => {
-        toast.success("Purchase successful!");
+        setIsPurchasing(true); // <-- Set purchasing state to true to show loader
+
         setTimeout(() => {
+            toast.success("Purchase successful!");
+            setIsPurchasing(false); // <-- Set purchasing state back to false
             router.push("/products");
-        }, 1500); // redirect after 1.5s
+        }, 1000); // Redirect after 1 second
     };
 
     return (
@@ -115,14 +120,24 @@ export default function ProductDetailPage({ params }) {
                     {/* Action Button */}
                     <div>
                         <button
-                            className={`px-6 py-3 rounded-md font-semibold transition-colors duration-300 w-full flex items-center gap-3 justify-center ${product.inStock
+                            className={`px-6 py-3 rounded-md font-semibold transition-colors duration-300 w-full flex items-center gap-3 justify-center ${isPurchasing ? 'opacity-50' : ''} ${product.inStock
                                 ? "bg-blue-600 text-white hover:bg-blue-700"
                                 : "bg-gray-300 text-gray-600 cursor-not-allowed"
                                 }`}
-                            disabled={!product.inStock}
+                            disabled={!product.inStock || isPurchasing} // <-- Disable button during purchasing
                             onClick={handlePurchase}
                         >
-                            <ShoppingCart size={20} /> {product.inStock ? "Purchase Now" : "Unavailable"}
+                            {isPurchasing ? ( // <-- Conditional rendering based on state
+                                <>
+                                    <Loader2 size={20} className="animate-spin" /> {/* Spinner icon */}
+                                    Purchasing...
+                                </>
+                            ) : (
+                                <>
+                                    <ShoppingCart size={20} />
+                                    {product.inStock ? "Purchase Now" : "Unavailable"}
+                                </>
+                            )}
                         </button>
                     </div>
                 </div>

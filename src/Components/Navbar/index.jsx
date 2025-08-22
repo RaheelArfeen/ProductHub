@@ -20,8 +20,6 @@ const Navbar = () => {
     const links = [
         { path: "/", label: "Home" },
         { path: "/products", label: "Products" },
-        { path: "/about", label: "About" },
-        { path: "/contact", label: "Contact" },
         { path: "/blog", label: "Blog" },
         ...(user ? [{ path: "/dashboard/add-product", label: "Dashboard" }] : []),
     ];
