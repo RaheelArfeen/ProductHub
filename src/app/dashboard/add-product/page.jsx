@@ -10,6 +10,16 @@ const Page = () => {
     const { user } = useAuth();
     const router = useRouter();
     const [loading, setLoading] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    // Form and Preview state
+    const [productName, setProductName] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [features, setFeatures] = useState(['']);
+    const [inStock, setInStock] = useState(true);
+    const [productImage, setProductImage] = useState('');
 
     // Redirect unauthenticated users
     useEffect(() => {
@@ -30,16 +40,7 @@ const Page = () => {
     }
 
     // Dropdown state logic
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
-
-    // Form and Preview state
-    const [productName, setProductName] = useState('');
-    const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
-    const [features, setFeatures] = useState(['']);
-    const [inStock, setInStock] = useState(true);
-    const [productImage, setProductImage] = useState('');
+   
 
     const categories = ['Analytics', 'Automation', 'CRM', 'AI Tools', 'Storage', 'Management'];
 
