@@ -2,8 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Star, ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/Components/Loader";
 
@@ -16,7 +15,7 @@ const truncateText = (text, maxWords) => {
     return text;
 };
 
-// Define a new fetch function for featured products
+// Fetch featured products
 const fetchFeaturedProducts = async () => {
     const res = await fetch("/api/products");
     if (!res.ok) {
@@ -35,23 +34,6 @@ const FeaturedProducts = () => {
         queryKey: ["featuredProducts"],
         queryFn: fetchFeaturedProducts,
     });
-
-    // Animation variants for the container (manages the stagger)
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.3, // Delay between each child's animation
-            },
-        },
-    };
-
-    // Animation variants for individual cards
-    const cardVariants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-    };
 
     // Handle loading and error states
     if (isLoading) {
@@ -84,20 +66,10 @@ const FeaturedProducts = () => {
                 </div>
 
                 {/* Product Grid */}
-                <motion.div
-                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.5 }}
-                >
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {featuredProducts.slice(0, 3).map((product) => (
-                        <motion.div
+                        <div
                             key={product._id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3 }}
                             className="bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col h-full"
                         >
                             {/* Product Image */}
@@ -117,7 +89,6 @@ const FeaturedProducts = () => {
 
                             {/* Card Content */}
                             <div className="p-6 flex flex-col flex-1 justify-between">
-                                {/* Top Section: badges + title + description */}
                                 <div>
                                     {/* Badges */}
                                     <div className="flex items-center gap-2 mb-2">
@@ -131,7 +102,7 @@ const FeaturedProducts = () => {
                                         )}
                                     </div>
 
-                                    {/* Title and Description */}
+                                    {/* Title + Description */}
                                     <h2 className="text-xl font-bold line-clamp-2 mb-2 text-gray-900 dark:text-gray-100">
                                         {product.productName}
                                     </h2>
@@ -140,7 +111,7 @@ const FeaturedProducts = () => {
                                     </p>
                                 </div>
 
-                                {/* Bottom Section: price + button */}
+                                {/* Price + Button */}
                                 <div className="flex items-center justify-between mt-auto">
                                     <div>
                                         <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -163,9 +134,9 @@ const FeaturedProducts = () => {
                                     </Link>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
-                </motion.div>
+                </div>
 
                 {/* View All */}
                 <div className="text-center mt-12">
