@@ -3,9 +3,12 @@
 import { useAuth } from "@/Contexts/AuthContext";
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-const page = () => {
+const Page = () => {
     const { user } = useAuth();
+    const router = useRouter();
 
     // Dropdown state logic
     const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +43,33 @@ const page = () => {
     const handleRemoveFeature = (index) => {
         const newFeatures = features.filter((_, i) => i !== index);
         setFeatures(newFeatures);
+    };
+
+    const handleAddProduct = async () => {
+        try {
+            const res = await fetch("/api/products", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    productName,
+                    description,
+                    price,
+                    category: selectedOption,
+                    features,
+                    inStock,
+                    productImage
+                })
+            });
+
+            if (!res.ok) throw new Error("Failed to add product");
+
+            const data = await res.json();
+            toast.success("Product added successfully!");
+            router.push("/products");
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to add product");
+        }
     };
 
     const itemVariants = {
@@ -228,6 +258,7 @@ const page = () => {
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
+                                    onClick={handleAddProduct}
                                     className="flex items-center justify-center w-full px-4 py-3 rounded-lg text-white font-bold text-lg bg-gradient-to-r from-blue-500 to-blue-800 dark:from-blue-700 dark:to-blue-900 transition-all hover:opacity-90"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus h-5 w-5 mr-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
@@ -297,4 +328,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
