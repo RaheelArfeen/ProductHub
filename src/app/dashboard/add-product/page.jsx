@@ -9,7 +9,8 @@ import { toast } from "sonner";
 const Page = () => {
     const { user } = useAuth();
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
+
+    // Dropdown state logic
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
 
@@ -21,32 +22,12 @@ const Page = () => {
     const [inStock, setInStock] = useState(true);
     const [productImage, setProductImage] = useState('');
 
-    // Redirect unauthenticated users
-    useEffect(() => {
-        if (!user) {
-            toast.error("You must be logged in to access this page");
-            router.push("/login"); // Replace with your login route
-        } else {
-            setLoading(false);
-        }
-    }, [user, router]);
-
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <p className="text-lg text-gray-700 dark:text-gray-300">Checking authentication...</p>
-            </div>
-        );
-    }
-
-    // Dropdown state logic
-   
-
     const categories = ['Analytics', 'Automation', 'CRM', 'AI Tools', 'Storage', 'Management'];
 
     const handleSelect = (option) => {
         setSelectedOption(option);
         setIsOpen(false);
+        console.log("Selected category:", option);
     };
 
     const handleFeatureChange = (index, event) => {
@@ -91,6 +72,7 @@ const Page = () => {
         }
     };
 
+    // New function to truncate the description for the preview
     const truncateDescription = (text, wordLimit) => {
         if (!text) return '';
         const words = text.split(' ');
@@ -113,7 +95,6 @@ const Page = () => {
                 transition={{ duration: 0.5 }}
                 className="lg:container mx-auto px-4 sm:px-6 lg:px-8 py-12 transition-colors duration-500 min-h-screen"
             >
-                {/* Header */}
                 <motion.div
                     initial="hidden"
                     animate="visible"
@@ -142,18 +123,14 @@ const Page = () => {
                         transition={{ duration: 0.5, delay: 0.3 }}
                         className="p-4 space-y-4 lg:col-span-2 shadow-lg rounded-xl bg-white dark:bg-gray-800 transition-colors duration-500"
                     >
-                        {/* Add New Product Form */}
                         <div className="p-4 rounded-lg bg-blue-50 dark:bg-gray-700 transition-colors duration-500">
                             <h3 className="text-2xl font-semibold leading-none tracking-tight flex items-center gap-2 text-blue-800 dark:text-blue-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-package h-5 w-5 text-blue-600 dark:text-blue-500"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path><path d="m7.5 4.27 9 5.15"></path></svg>
                                 Add New Product
                             </h3>
-                            <span className="text-gray-600 font-medium dark:text-gray-400">
-                                Create a new product to add to your catalog. Fill in all the details below.
-                            </span>
+                            <span className="text-gray-600 font-medium dark:text-gray-400">Create a new product to add to your catalog. Fill in all the details below.</span>
                         </div>
-
                         <div className="p-4">
-                            {/* Product Name & Price */}
                             <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
                                 <label className="w-full">
                                     <p className="font-bold mb-1 text-blue-800 dark:text-blue-300">Product Name *</p>
@@ -176,8 +153,6 @@ const Page = () => {
                                     />
                                 </label>
                             </div>
-
-                            {/* Category */}
                             <div className="mt-4">
                                 <label>
                                     <p className="font-bold mb-1 text-blue-800 dark:text-blue-300">Category *</p>
@@ -196,7 +171,8 @@ const Page = () => {
                                                 <li
                                                     key={option}
                                                     onClick={() => handleSelect(option)}
-                                                    className={`p-3 cursor-pointer ${selectedOption === option ? 'bg-blue-600 text-white dark:bg-blue-800' : 'hover:bg-blue-100 dark:hover:bg-blue-600 dark:hover:text-white'}`}
+                                                    className={`p-3 cursor-pointer ${selectedOption === option ? 'bg-blue-600 text-white dark:bg-blue-800' : 'hover:bg-blue-100 dark:hover:bg-blue-600 dark:hover:text-white'
+                                                        }`}
                                                 >
                                                     {option}
                                                 </li>
@@ -205,8 +181,6 @@ const Page = () => {
                                     )}
                                 </div>
                             </div>
-
-                            {/* Description */}
                             <div className="mt-4">
                                 <label className="w-full">
                                     <p className="font-bold mb-1 text-blue-800 dark:text-blue-300">Description *</p>
@@ -219,7 +193,7 @@ const Page = () => {
                                 </label>
                             </div>
 
-                            {/* Product Image */}
+                            {/* Product Image Link Input */}
                             <div className="mt-4">
                                 <label className="w-full">
                                     <p className="font-bold mb-1 text-blue-800 dark:text-blue-300">Product Image</p>
@@ -234,7 +208,7 @@ const Page = () => {
                                 </label>
                             </div>
 
-                            {/* Features */}
+                            {/* Features Section */}
                             <div className="mt-4">
                                 <div className="flex items-center justify-between mb-3">
                                     <p className="font-bold text-lg text-blue-800 dark:text-blue-300">Features *</p>
@@ -242,33 +216,45 @@ const Page = () => {
                                         onClick={handleAddFeature}
                                         className="flex items-center gap-1 text-blue-700 font-semibold border border-blue-200 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors dark:text-blue-400 dark:border-blue-500 dark:hover:bg-blue-900"
                                     >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus h-5 w-5"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                                         Add Feature
                                     </button>
                                 </div>
                                 <div className="space-y-2">
-                                    {features.map((feature, index) => (
-                                        <div key={index} className="flex items-center gap-2">
-                                            <input
-                                                type="text"
-                                                className="border border-blue-200 rounded-md py-2 px-3 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder={`Feature ${index + 1}`}
-                                                value={feature}
-                                                onChange={(e) => handleFeatureChange(index, e)}
-                                            />
-                                            {features.length > 1 && (
-                                                <button
-                                                    onClick={() => handleRemoveFeature(index)}
-                                                    className="text-gray-500 hover:text-red-500 transition-colors dark:text-gray-400 dark:hover:text-red-400"
-                                                >
-                                                    Remove
-                                                </button>
-                                            )}
-                                        </div>
-                                    ))}
+                                    <AnimatePresence>
+                                        {features.map((feature, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ scale: 0.9, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                exit={{ scale: 0.9, opacity: 0 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="flex items-center gap-2"
+                                            >
+                                                <input
+                                                    type="text"
+                                                    className="border border-blue-200 rounded-md py-2 px-3 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    placeholder={`Feature ${index + 1}`}
+                                                    value={feature}
+                                                    onChange={(e) => handleFeatureChange(index, e)}
+                                                />
+                                                {features.length > 1 && (
+                                                    <motion.button
+                                                        onClick={() => handleRemoveFeature(index)}
+                                                        whileHover={{ scale: 1.1 }}
+                                                        whileTap={{ scale: 0.9 }}
+                                                        className="text-gray-500 hover:text-red-500 transition-colors dark:text-gray-400 dark:hover:text-red-400"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x h-5 w-5"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                                                    </motion.button>
+                                                )}
+                                            </motion.div>
+                                        ))}
+                                    </AnimatePresence>
                                 </div>
                             </div>
 
-                            {/* In Stock */}
+                            {/* In Stock Toggle */}
                             <div className="mt-4 flex items-center gap-2">
                                 <label className="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" className="sr-only peer" checked={inStock} onChange={() => setInStock(!inStock)} />
@@ -279,12 +265,15 @@ const Page = () => {
 
                             {/* Add Product Button */}
                             <div className="mt-8">
-                                <button
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
                                     onClick={handleAddProduct}
                                     className="flex items-center justify-center w-full px-4 py-3 rounded-lg text-white font-bold text-lg bg-gradient-to-r from-blue-500 to-blue-800 dark:from-blue-700 dark:to-blue-900 transition-all hover:opacity-90"
                                 >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus h-5 w-5 mr-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                                     Add Product
-                                </button>
+                                </motion.button>
                             </div>
                         </div>
                     </motion.div>
@@ -299,15 +288,22 @@ const Page = () => {
                         <h2 className="text-2xl font-bold mb-2 text-blue-800 dark:text-blue-300">Preview</h2>
                         <p className="text-gray-600 font-medium mb-4 dark:text-gray-400">How your product will appear to customers</p>
                         <div className="bg-white border border-blue-200 rounded-xl p-6 shadow-md dark:bg-gray-800 dark:border-gray-700 transition-colors duration-500">
+                            {/* Image Preview with bluish background */}
                             {productImage ? (
-                                <div className="mb-4 bg-blue-100 rounded-md p-4 flex items-center justify-center dark:bg-blue-900">
+                                <motion.div
+                                    initial={{ scale: 0.8 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="mb-4 bg-blue-100 rounded-md p-4 flex items-center justify-center dark:bg-blue-900"
+                                >
                                     <img src={productImage} alt="Product Preview" className="w-full h-auto rounded-md object-cover" />
-                                </div>
+                                </motion.div>
                             ) : (
                                 <div className="mb-4 bg-blue-100 rounded-md h-32 flex items-center justify-center text-blue-400 dark:bg-blue-900 dark:text-blue-300">
                                     <span className="font-medium">Product Image Placeholder</span>
                                 </div>
                             )}
+                            {/* Reordered tags to show category first */}
                             <div className="flex items-center gap-2 mb-2">
                                 {selectedOption && (
                                     <span className="inline-block px-2 py-1 rounded-full text-xs font-semibold bg-blue-200 text-blue-800 dark:bg-blue-700 dark:text-blue-300">
@@ -319,8 +315,21 @@ const Page = () => {
                                 </span>
                             </div>
                             <h3 className="text-xl font-bold mb-1 text-gray-900 dark:text-gray-100">{productName || 'Product Name'}</h3>
-                            <p className="text-gray-700 text-sm mb-2 dark:text-gray-300">{truncateDescription(description, 50) || 'Product description will appear here...'}</p>
+                            <p className="text-gray-700 text-sm mb-2 dark:text-gray-300">{truncateDescription(description, 20) || 'Product description will appear here...'}</p>
                             <p className="text-xl font-semibold text-gray-900 dark:text-gray-100">${price || '0'}<span className="text-sm text-gray-500 dark:text-gray-400">/month</span></p>
+                        </div>
+                        {/* Tips for Success Section */}
+                        <div className="p-6 mt-8 rounded-xl bg-blue-50 border border-blue-200 dark:bg-gray-800 dark:border-gray-700 transition-colors duration-500">
+                            <h3 className="text-2xl font-bold text-blue-800 mb-4 flex items-center gap-2 dark:text-blue-300">
+                                Tips for Success
+                            </h3>
+                            <ul className="list-disc list-inside space-y-2 text-blue-700 font-medium dark:text-blue-400">
+                                <li>Use clear, descriptive product names</li>
+                                <li>Write detailed descriptions highlighting benefits</li>
+                                <li>List key features that solve customer problems</li>
+                                <li>Set competitive pricing for your market</li>
+                                <li>Keep product information up to date</li>
+                            </ul>
                         </div>
                     </motion.div>
                 </div>
