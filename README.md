@@ -10,7 +10,7 @@ Admins can manage products, and users can explore categories seamlessly.
 - Modern UI with **Next.js App Router**
 - Product listing with filters & search
 - Product detail pages
-- Authentication (login / register)
+- Authentication (login)
 - Protected dashboard routes
 - Responsive design with Tailwind CSS
 - Deployed on **Vercel**
