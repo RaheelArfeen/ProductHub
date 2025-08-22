@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Product Hub
 
-## Getting Started
+A full-stack product showcase and management platform built with **Next.js 14**, **React Query**, and **Tailwind CSS**.  
+Product Hub allows users to browse products, view detailed information, and manage accounts with authentication.  
+Admins can manage products, and users can explore categories seamlessly.
 
-First, run the development server:
+---
 
+## 🚀 Features
+- Modern UI with **Next.js App Router**
+- Product listing with filters & search
+- Product detail pages
+- Authentication (login / register)
+- Protected dashboard routes
+- Responsive design with Tailwind CSS
+- Deployed on **Vercel**
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/product-hub.git
+cd product-hub
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. Environment variables
+Create a `.env.local` file in the root and add:
+```env
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_secret_key
+DATABASE_URL=your_database_connection
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Run the development server
+```bash
+npm run dev
+```
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+### 5. Build for production
+```bash
+npm run build
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📂 Route Summary
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Route               | Description                                      | Access       |
+|---------------------|--------------------------------------------------|--------------|
+| `/`                 | Home page with featured products                 | Public       |
+| `/products`         | Product listing with search & filter             | Public       |
+| `/products/[id]`    | Single product details page                      | Public       |
+| `/login`            | User login page                                  | Public       |
+| `/register`         | User registration page                           | Public       |
+| `/dashboard`        | User dashboard (protected)                       | Auth only    |
+| `/dashboard/admin`  | Admin dashboard with product management          | Admin only   |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📦 Deployment
+This project is deployed on [Vercel](https://vercel.com/).  
+Production URL: [https://product-hub-lyart.vercel.app/](https://product-hub-lyart.vercel.app/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📝 License
+This project is licensed under the MIT License.
